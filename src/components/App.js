@@ -2,6 +2,7 @@ import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import React from "react";
 import { data } from "../data"
+import { addMovies } from "../actions";
 
 
 class App extends React.Component {
@@ -23,10 +24,9 @@ class App extends React.Component {
 
     //Dispatching action of ADD_MOVIES to the store , which gets passed to the reducer, and then reducer performs some activity based on the type of action and then return the new state to the store. Then Store replaces its state with the new state sent by the reducer.
     // After the dispatch takes place, instantly the subscribe callback function is called after the dispatch of action.
-    store.dispatch({
-      type: 'ADD_MOVIES',
-      movies: data,
-    });
+
+    // Dispatching the action by passing the Action Creators to dispatch method. It's the community way to do it this way instead of hardcoding it.
+    store.dispatch(addMovies(data));
 
     // This log takes place at last, after the subscribe callback has been performed after the dispatch of action to the store.
     console.log("STATE", store.getState());
