@@ -3,7 +3,9 @@
 
 //Action Types
 export const ADD_MOVIES = 'ADD_MOVIES';
-export const ADD_FAVOURITE = "ADD_FAVOURITE";
+export const ADD_TO_FAVOURITES = "ADD_TO_FAVOURITES";
+export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
+export const SET_SHOW_FAVOURITES = 'SET_SHOW_FAVOURITES'
 
 // Action Creators - We are defining these here, instead of hard coading to improve flexibility of our code.
 export function addMovies(movies) {
@@ -14,9 +16,25 @@ export function addMovies(movies) {
 }
 
 // Add Favourite - Action Creator
-export function addFavourite(movie) {
+export function addToFavourite(movie) {
     return {
-        type: ADD_FAVOURITE,
+        type: ADD_TO_FAVOURITES,
         movie: movie,
+    }
+}
+
+// Remove Favourite - Action Creator
+export function removeFromFavourite(movie) {
+    return {
+        type: REMOVE_FROM_FAVOURITES,
+        movie
+    }
+}
+
+// Action for enabling the show Favourites tab
+export function setShowFavourites(val) {
+    return {
+        type: SET_SHOW_FAVOURITES,
+        val
     }
 }

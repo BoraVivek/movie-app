@@ -2,8 +2,7 @@ import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import React from "react";
 import { data } from "../data"
-import { addMovies } from "../actions";
-
+import { addMovies, setShowFavourites } from "../actions";
 
 class App extends React.Component {
 
@@ -47,22 +46,30 @@ class App extends React.Component {
     return false;
   }
 
+  // Dispatch the show favourite action, to toggle show favourite value
+  onChangeTab = (value) => {
+    this.props.store.dispatch(setShowFavourites(value));
+  }
+
   render() {
     //Getting the list of movies
-    const { list } = this.props.store.getState();
+    const { list, favourites, showFavourites } = this.props.store.getState();
+
+    // If showFavourites is true, then show favourites list, else show movies list
+    const displayMovies = showFavourites ? favourites : list;
 
     return (
       <div className="App" >
         <Navbar />
         <div className="main">
           <div className="tabs">
-            <div className="tab">Movies</div>
-            <div className="tab">Favourites</div>
+            {/* Highlighting tabs based on the active tab state */}
+            <div className={!showFavourites ? 'tab active-tabs' : 'tab'} onClick={() => this.onChangeTab(false)}>Movies</div>
+            <div className={showFavourites ? 'tab active-tabs' : 'tab'} onClick={() => this.onChangeTab(true)}>Favourites</div>
           </div>
-
           <div className="list">
             {/* Rendering the list of movies using Movie component by mapping over the list */}
-            {list.map((movie, index) => {
+            {displayMovies.map((movie, index) => {
               return <MovieCard
                 key={`movies-${index}`}
                 movie={movie}
@@ -72,8 +79,10 @@ class App extends React.Component {
                 isFavourite={this.isMovieFavourite(movie)} />
             })}
           </div>
+          {/* If no movies to display then show a messae */}
+          {displayMovies.length === 0 && <div className="no-movies">No movies to display</div>}
         </div>
-      </div>
+      </div >
     );
   }
 }
