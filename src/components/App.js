@@ -12,7 +12,7 @@ class App extends React.Component {
 
     // Subscribing to the store, inside the subscribe we pass a callback function. Which gets called whenever an action is dispatched to the store.
     store.subscribe(() => {
-      console.log("Updated"); // This gets printed just after an action has been dispatched to the store
+      console.log("Updated", store.getState()); // This gets printed just after an action has been dispatched to the store
 
       // It is not advised to use forceUpdate. It is used for forcefully updating the component. We should never use this method
       this.forceUpdate();
@@ -32,7 +32,23 @@ class App extends React.Component {
     console.log("STATE", store.getState());
   }
 
+  // Checks if movie is present in the favourites list or not and accordingly return true or false.
+  isMovieFavourite = (movie) => {
+    const { favourites } = this.props.store.getState();
+
+    // Find the index of movie in the array
+    const index = favourites.indexOf(movie);
+
+    if (index !== -1) {
+      // Return true when movie is found
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
+    //Getting the list of movies
     const { list } = this.props.store.getState();
 
     return (
@@ -45,8 +61,15 @@ class App extends React.Component {
           </div>
 
           <div className="list">
+            {/* Rendering the list of movies using Movie component by mapping over the list */}
             {list.map((movie, index) => {
-              return <MovieCard key={`movies-${index}`} movie={movie} />
+              return <MovieCard
+                key={`movies-${index}`}
+                movie={movie}
+                // Sending dispatch function to the Component, so that it can dispatch an action.
+                dispatch={this.props.store.dispatch}
+                // Sending isFavourite status, so that button can be altered accordingly
+                isFavourite={this.isMovieFavourite(movie)} />
             })}
           </div>
         </div>

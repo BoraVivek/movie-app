@@ -7,6 +7,7 @@ import movies from './reducers';
 
 // Creating Store and Passing reducer to the store, reducer gets triggered whenever a new action is dispatched to the store.
 const store = createStore(movies);
+
 console.log('store', store);
 // console.log("BEFORE STATE", store.getState());
 

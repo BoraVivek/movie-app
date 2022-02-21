@@ -3,11 +3,20 @@
 
 //Action Types
 export const ADD_MOVIES = 'ADD_MOVIES';
+export const ADD_FAVOURITE = "ADD_FAVOURITE";
 
 // Action Creators - We are defining these here, instead of hard coading to improve flexibility of our code.
 export function addMovies(movies) {
     return {
         type: ADD_MOVIES,
         movies: movies,
+    }
+}
+
+// Add Favourite - Action Creator
+export function addFavourite(movie) {
+    return {
+        type: ADD_FAVOURITE,
+        movie: movie,
     }
 }
