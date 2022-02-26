@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+
 // Importing action ADD_MOVIES from actions
 import { ADD_MOVIES, ADD_TO_FAVOURITES, REMOVE_FROM_FAVOURITES, SET_SHOW_FAVOURITES } from "../actions";
 
@@ -54,25 +56,31 @@ export function search(state = initialSearchState, action) {
 }
 
 // Initial State for Root Reducer
-const initialRootState = {
-    movies: initialMoviesState,
-    search: initialSearchState
-}
+// const initialRootState = {
+//     movies: initialMoviesState,
+//     search: initialSearchState
+// }
 
 
 // Root reducer is used to combine, both movies, and search reducers, and returning them to the store.
-export default function rootReducer(state = initialRootState, action) {
-    return {
-        // Movies will be managed by movies reducer
-        /**
-         * Here on the movies property, we will call the movies function and pass the movies state, and action to the function, it will perform actions on it, and then return the state to the store.
-         */
-        movies: movies(state.movies, action),
+// export default function rootReducer(state = initialRootState, action) {
+// return {
+// Movies will be managed by movies reducer
+/**
+ * Here on the movies property, we will call the movies function and pass the movies state, and action to the function, it will perform actions on it, and then return the state to the store.
+ */
+// movies: movies(state.movies, action),
 
-        //Search will be managed by search reducer
-        /**
-         * Here on search property, we will call the search function/reducer and pass the search state, and action to the function, it will perform actions on it, and then return the state to the store.
-         */
-        search: search(state.search, action)
-    }
-}
+//Search will be managed by search reducer
+/**
+ * Here on search property, we will call the search function/reducer and pass the search state, and action to the function, it will perform actions on it, and then return the state to the store.
+ */
+// search: search(state.search, action)
+// }
+// }
+
+//Redux has an inbuilt function to combine reducers, we don't have to make our own functionality for that, we just have to pass an object to the combineReducers function with our keys for the state, and the reference to the reducer, which will handle the functionalities for those keys.
+export default combineReducers({
+    movies: movies, //* Internally it will call the reducer like this movies(state.movies, action),
+    search: search
+})
