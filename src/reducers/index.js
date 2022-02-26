@@ -9,8 +9,7 @@ const initialMoviesState = {
 
 // Creating the reducer, which gets the new state as first argumnet, and action as second argument. And based on the action type, we return the newState to the store.
 //Creating reducer for our store, which performs various actions based on the type of action provided.
-export default function movies(state = initialMoviesState, action) {
-
+export function movies(state = initialMoviesState, action) {
     switch (action.type) {
         //If action type is ADD_MOVIES then we add the movies list to the state
         case ADD_MOVIES:
@@ -35,6 +34,7 @@ export default function movies(state = initialMoviesState, action) {
         case SET_SHOW_FAVOURITES:
             return {
                 ...state,
+                // Enabling or disabling the showFavourites state, to toggle the tabs in homepage.
                 showFavourites: action.val
             }
         //If no action type is present then we return the previous state.
@@ -43,3 +43,36 @@ export default function movies(state = initialMoviesState, action) {
     }
 }
 
+// Initial State for search Reducer
+const initialSearchState = {
+    result: {}
+}
+
+// Creating Search reducer which returns the state to the store.
+export function search(state = initialSearchState, action) {
+    return state;
+}
+
+// Initial State for Root Reducer
+const initialRootState = {
+    movies: initialMoviesState,
+    search: initialSearchState
+}
+
+
+// Root reducer is used to combine, both movies, and search reducers, and returning them to the store.
+export default function rootReducer(state = initialRootState, action) {
+    return {
+        // Movies will be managed by movies reducer
+        /**
+         * Here on the movies property, we will call the movies function and pass the movies state, and action to the function, it will perform actions on it, and then return the state to the store.
+         */
+        movies: movies(state.movies, action),
+
+        //Search will be managed by search reducer
+        /**
+         * Here on search property, we will call the search function/reducer and pass the search state, and action to the function, it will perform actions on it, and then return the state to the store.
+         */
+        search: search(state.search, action)
+    }
+}

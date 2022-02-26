@@ -33,10 +33,10 @@ class App extends React.Component {
 
   // Checks if movie is present in the favourites list or not and accordingly return true or false.
   isMovieFavourite = (movie) => {
-    const { favourites } = this.props.store.getState();
+    const { movies } = this.props.store.getState(); //Getting the movies object from the store.
 
-    // Find the index of movie in the array
-    const index = favourites.indexOf(movie);
+    // Find the index of movie in the array of favourites present inside the movies object
+    const index = movies.favourites.indexOf(movie);
 
     if (index !== -1) {
       // Return true when movie is found
@@ -52,8 +52,11 @@ class App extends React.Component {
   }
 
   render() {
-    //Getting the list of movies
-    const { list, favourites, showFavourites } = this.props.store.getState();
+    // Getting the movies object from the state, which is an object, containing list of movies, and favourite movies.
+    const { movies } = this.props.store.getState(); //{movies: {}, search: {}}
+
+    //Getting the list of movies, favourites and showFavourites
+    const { list, favourites, showFavourites } = movies;
 
     // If showFavourites is true, then show favourites list, else show movies list
     const displayMovies = showFavourites ? favourites : list;
