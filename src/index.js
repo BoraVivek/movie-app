@@ -1,12 +1,31 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import rootReducer from './reducers';
 
+// Curried form of function logger(obj, next, action) 
+// logger(obj)(next)(action) => This is how redux will call logger internally
+const logger = function ({ dispatch, getState }) {
+  return function (next) {
+    return function (action) {
+      //Middleware code goes here
+      console.log("ACTION_TYPE = ", action.type);
+
+      //next refers to another middleware, where we pass action as argument,
+      // If we don't call next() then our code will stop here and won't move ahead
+      next(action);
+    }
+  }
+}
+
+
+
+
 // Creating Store and Passing reducer to the store, reducer gets triggered whenever a new action is dispatched to the store.
-const store = createStore(rootReducer); //Passing the root reducer to the createStore function
+//Applying the logger middleware to our store.
+const store = createStore(rootReducer, applyMiddleware(logger)); //Passing the root reducer to the createStore function
 
 console.log('store', store.getState());
 // console.log("BEFORE STATE", store.getState());
