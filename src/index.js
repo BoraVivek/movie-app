@@ -7,21 +7,28 @@ import rootReducer from './reducers';
 
 // Curried form of function logger(obj, next, action) 
 // logger(obj)(next)(action) => This is how redux will call logger internally
-const logger = function ({ dispatch, getState }) {
-  return function (next) {
-    return function (action) {
-      //Middleware code goes here
-      console.log("ACTION_TYPE = ", action.type);
+// const logger = function ({ dispatch, getState }) {
+//   return function (next) {
+//     return function (action) {
+//       //Middleware code goes here
+//       console.log("ACTION_TYPE = ", action.type);
 
-      //next refers to another middleware, where we pass action as argument,
-      // If we don't call next() then our code will stop here and won't move ahead
-      next(action);
-    }
-  }
+//       //next refers to another middleware, where we pass action as argument,
+//       // If we don't call next() then our code will stop here and won't move ahead
+//       next(action);
+//     }
+//   }
+// }
+
+
+//Arrow function way of creating middleware
+const logger = ({ dispatch, getState }) => (next) => (action) => {
+  console.log("ACTION_TYPE = ", action.type);
+
+  //next refers to another middleware, where we pass action as argument,
+  // If we don't call next() then our code will stop here and won't move ahead, it won't be able to dispatch the action to the reducer
+  next(action);
 }
-
-
-
 
 // Creating Store and Passing reducer to the store, reducer gets triggered whenever a new action is dispatched to the store.
 //Applying the logger middleware to our store.
