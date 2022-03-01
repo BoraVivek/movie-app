@@ -53,7 +53,7 @@ class App extends React.Component {
 
   render() {
     // Getting the movies object from the state, which is an object, containing list of movies, and favourite movies.
-    const { movies } = this.props.store.getState(); //{movies: {}, search: {}}
+    const { movies, search } = this.props.store.getState(); //{movies: {}, search: {}}
 
     //Getting the list of movies, favourites and showFavourites
     const { list, favourites, showFavourites } = movies;
@@ -63,8 +63,8 @@ class App extends React.Component {
 
     return (
       <div className="App" >
-        {/* Passing the dispatch to the Navbar Component */}
-        <Navbar dispatch={this.props.store.dispatch} />
+        {/* Passing the dispatch and search result to the Navbar Component */}
+        <Navbar dispatch={this.props.store.dispatch} search={search} />
         <div className="main">
           <div className="tabs">
             {/* Highlighting tabs based on the active tab state */}

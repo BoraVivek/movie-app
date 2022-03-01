@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 // Importing action ADD_MOVIES from actions
-import { ADD_MOVIES, ADD_TO_FAVOURITES, REMOVE_FROM_FAVOURITES, SET_SHOW_FAVOURITES } from "../actions";
+import { ADD_MOVIES, ADD_MOVIE_TO_LIST, ADD_SEARCH_RESULT, ADD_TO_FAVOURITES, REMOVE_FROM_FAVOURITES, SET_SHOW_FAVOURITES } from "../actions";
 
 // Defining initial state for Store.
 const initialMoviesState = {
@@ -39,6 +39,13 @@ export function movies(state = initialMoviesState, action) {
                 // Enabling or disabling the showFavourites state, to toggle the tabs in homepage.
                 showFavourites: action.val
             }
+        // Implementation of adding the search movie to the list
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                //Add movie to the list in store
+                list: [action.movie, ...state.list],
+            }
         //If no action type is present then we return the previous state.
         default:
             return state;
@@ -47,12 +54,34 @@ export function movies(state = initialMoviesState, action) {
 
 // Initial State for search Reducer
 const initialSearchState = {
-    result: {}
+    result: {},
+    showSearchResults: false
 }
 
 // Creating Search reducer which returns the state to the store.
 export function search(state = initialSearchState, action) {
-    return state;
+    switch (action.type) {
+        //If action type is ADD_SEARCH_RESULT then we add the movie to the result object
+        case ADD_SEARCH_RESULT:
+            return {
+                ...state,
+                //Adding the searched movie to the store.
+                result: action.movie,
+                //When the result is added in store, enable the showSearchResults to show the search result
+                showSearchResults: true
+            };
+
+        // If action type is ADD_MOVIE_TO_LIST, then hide the search result box 
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                //When the searched movie is added to the list, then hide the search results box
+                showSearchResults: false,
+            }
+        //If no action type is present then we return the previous state.
+        default:
+            return state;
+    }
 }
 
 // Initial State for Root Reducer

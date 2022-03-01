@@ -10,7 +10,6 @@ class Navbar extends React.Component {
 
         // Set the state
         this.state = {
-            showSearchResults: true,
             searchText: '',
         };
     }
@@ -19,11 +18,6 @@ class Navbar extends React.Component {
     handleAddToMovies = (movie) => {
         // Dispatches the action of adding movie to the list
         this.props.dispatch(addMoviesToList(movie));
-
-        // Sets the state of showSearchResults to false
-        this.setState({
-            showSearchResults: false
-        })
     }
 
     // Used for handling search
@@ -44,16 +38,9 @@ class Navbar extends React.Component {
     };
 
     render() {
-        // Getting the showSearchResults state
-        const { showSearchResults } = this.state;
 
-        // Temporary Data
-        const data = [
-            {
-                Poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c3BpZGVybWFufGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-                Title: "Spiderman"
-            }
-        ];
+        // Here we are destructuring the props.search object, and getting the result, which we are renaming as movie
+        const { result: movie, showSearchResults } = this.props.search;
 
         return (
             <div className="nav">
@@ -65,11 +52,11 @@ class Navbar extends React.Component {
                     {showSearchResults &&
                         <div className="search-results">
                             <div className="search-result">
-                                <img src={data[0].Poster} alt="search-pic" />
+                                <img src={movie.Poster} alt="search-pic" />
 
                                 <div className="movie-info">
-                                    <span>{data[0].Title}</span>
-                                    <button onClick={() => this.handleAddToMovies(data[0])}>
+                                    <span>{movie.Title}</span>
+                                    <button onClick={() => this.handleAddToMovies(movie)}>
                                         Add to Movies
                                     </button>
                                 </div>
