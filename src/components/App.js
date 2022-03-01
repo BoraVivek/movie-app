@@ -63,7 +63,8 @@ class App extends React.Component {
 
     return (
       <div className="App" >
-        <Navbar />
+        {/* Passing the dispatch to the Navbar Component */}
+        <Navbar dispatch={this.props.store.dispatch} />
         <div className="main">
           <div className="tabs">
             {/* Highlighting tabs based on the active tab state */}

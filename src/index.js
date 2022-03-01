@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import thunk from 'redux-thunk';
 import './index.css';
 import App from './components/App';
 import rootReducer from './reducers';
@@ -23,7 +24,24 @@ import rootReducer from './reducers';
 
 //Arrow function way of creating middleware
 const logger = ({ dispatch, getState }) => (next) => (action) => {
-  console.log("ACTION_TYPE = ", action.type);
+
+  //If action is of function type, then we don't log that in console
+  if (typeof action !== 'function') {
+    console.log("ACTION_TYPE = ", action.type);
+  }
+  //next refers to another middleware, where we pass action as argument,
+  // If we don't call next() then our code will stop here and won't move ahead, it won't be able to dispatch the action to the reducer
+  next(action);
+}
+
+// thunk is used to execute a function which does a delayed work, like fetch request etc.., so instead of returning object as action, it returns a function which gets called by thunk
+const thunk = ({ dispatch, getState }) => (next) => (action) => {
+
+  // If action type is function, then call the action and pass it the dispatch so that it can dispatch an action
+  if (typeof action == 'function') {
+    action(dispatch);
+    return;
+  }
 
   //next refers to another middleware, where we pass action as argument,
   // If we don't call next() then our code will stop here and won't move ahead, it won't be able to dispatch the action to the reducer
@@ -32,7 +50,7 @@ const logger = ({ dispatch, getState }) => (next) => (action) => {
 
 // Creating Store and Passing reducer to the store, reducer gets triggered whenever a new action is dispatched to the store.
 //Applying the logger middleware to our store.
-const store = createStore(rootReducer, applyMiddleware(logger)); //Passing the root reducer to the createStore function
+const store = createStore(rootReducer, applyMiddleware(logger, thunk)); //Passing the root reducer to the createStore function
 
 console.log('store', store.getState());
 // console.log("BEFORE STATE", store.getState());

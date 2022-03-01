@@ -6,6 +6,7 @@ export const ADD_MOVIES = 'ADD_MOVIES';
 export const ADD_TO_FAVOURITES = "ADD_TO_FAVOURITES";
 export const REMOVE_FROM_FAVOURITES = 'REMOVE_FROM_FAVOURITES';
 export const SET_SHOW_FAVOURITES = 'SET_SHOW_FAVOURITES'
+export const ADD_MOVIE_TO_LIST = 'ADD_MOVIE_TO_LIST';
 
 // Action Creators - We are defining these here, instead of hard coading to improve flexibility of our code.
 export function addMovies(movies) {
@@ -37,4 +38,28 @@ export function setShowFavourites(val) {
         type: SET_SHOW_FAVOURITES,
         val
     }
+}
+
+// Action Creator for Adding movies to the list
+export function addMoviesToList(movie) {
+    return {
+        type: ADD_MOVIE_TO_LIST,
+        movie
+    };
+}
+
+// Handles the search of movies, it returns a async function instead of an object, which we need to then handle using the thunk
+export function handleMovieSearch(movie) {
+    const url = `http://www.omdbapi.com/?apikey=c12f0d8d&t=${movie}`;
+    return function (dispatch) {
+        fetch(url)
+            .then(response => response.json())
+            .then(movie => {
+                console.log('movie', movie);
+            });
+
+        //Dispatch an Action
+        // dispatch({type: 'ADD_SEARCH_RESULT, movie})
+    }
+
 }
